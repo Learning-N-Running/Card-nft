@@ -6,12 +6,12 @@
 // global scope, and execute the script.
 
 async function main() {
-  const MyCryptoLions = await hre.ethers.getContractFactory("MyCryptoLions");
-  const myCryptoLions = await MyCryptoLions.deploy("MyCryptoLions", "MCL");
+  const TinaCard = await hre.ethers.getContractFactory("TinaCard");
+  const tinacard = await TinaCard.deploy("TinaCard", "TC");
 
-  await myCryptoLions.deployed();
+  await tinacard.deployed();
 
-  console.log("MyCryptoLions deployed to:", myCryptoLions.address);
+  console.log("TinaCard deployed to:", tinacard.address);
 }
 
 main()
