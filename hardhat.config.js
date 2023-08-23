@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("@nomiclabs/hardhat-etherscan");
 require("dotenv").config();
 /** @type import('hardhat/config').HardhatUserConfig */
 
@@ -11,5 +12,8 @@ module.exports = {
       url: SEPOLIA_API_URL,
       accounts: [`0x${SEPOLIA_PRIVATE_KEY}`],
     },
+  },
+  etherscan: {
+    apiKey: process.env.SEPOLIASCAN_API_KEY,
   },
 };
