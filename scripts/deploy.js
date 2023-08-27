@@ -4,14 +4,15 @@
 // You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
+require("dotenv").config();
 
 async function main() {
-  const TinaCard = await hre.ethers.getContractFactory("TinaCard");
-  const tinacard = await TinaCard.deploy("TinaCard", "TC");
+  const GachaCard = await hre.ethers.getContractFactory("GachaCard");
+  const gachaCard = await GachaCard.deploy();
 
-  await tinacard.deployed();
+  await gachaCard.deployed();
 
-  console.log("TinaCard deployed to:", tinacard.address);
+  console.log("GachaCard deployed to:", gachaCard.address);
 }
 
 main()
