@@ -15,6 +15,8 @@ contract GachaCard is ERC721EnumerableUpgradeable, ReentrancyGuard {
         firstMintPrice = _firstMintPrice;
         mintPrice = _mintPrice;
         firstMintAmount = _firstMintAmount;
+
+        mintedMaincardAmount=0;
     }
 
     enum CardType {
@@ -23,14 +25,17 @@ contract GachaCard is ERC721EnumerableUpgradeable, ReentrancyGuard {
     }
 
     //State Variables
-    MainCard[] mainCards; //MainCard들 배열
+    MainCard[] mainCards; //MainCard들 종류 배열
     SubCard[] subCards; //SubCards들 배열
     uint firstMintPrice; // 처음 민팅되는 가격
     uint mintPrice; //최초 민팅 이후 10개씩 민팅할 때마다 가격
     uint firstMintAmount; // 처음 민팅되는 양
+    uint mintedMaincardAmount; //민팅된 Maincard amount
 
 
     //Mappings
+    mapping(address => uint256) internal mainCardAmount; // 주소로 
+
     struct MainCard {
         //essential
         string name;
@@ -76,7 +81,8 @@ contract GachaCard is ERC721EnumerableUpgradeable, ReentrancyGuard {
     
 
     //Functions
-    function _writeMainInfo(
+    /**최초 MainCard 민팅 시*/
+    function firstMainMint( 
         string memory _name,
         string memory _portfolio,
         string memory _email,
@@ -84,21 +90,27 @@ contract GachaCard is ERC721EnumerableUpgradeable, ReentrancyGuard {
         string memory _university,
         string memory _major,
         string memory _phone
-    ) private {
-        MainCard memory mainCard = MainCard({
-        name: _name,
-        portfolio: _portfolio,
-        email: _email,
-        cardType : CardType.MainCharacter,
-        owner: msg.sender,
-        company: _company,
-        university: _university,
-        major: _major,
-        phone: _phone
-        });
-        mainCards.push(mainCard); //그 사람이 갖고 있는 개수 추가하는 것부터 만들면 됨.
+    ) public {
+        MainCard memory mainCard = MainCard({ //MainCard에 들어갈 내용을 작성하는 부분
+            name: _name,
+            portfolio: _portfolio,
+            email: _email,
+            cardType : CardType.MainCharacter,
+            owner: msg.sender,
+            company: _company,
+            university: _university,
+            major: _major,
+            phone: _phone
+            });
+        mainCards.push(mainCard);
+        mintedMaincardAmount+=firstMintAmount;
+        for (uint _id= mintedMaincardAmount+1; _id<= (mintedMaincardAmount+firstMintAmount);_id++){
+            _safeMint(msg.sender,_id);
+            emit MainCardCreated(_id, _name, _portfolio, _email, CardType.MainCharacter, msg.sender, _company, _university, _major, _phone);
+        }
     }
     
+
     function getFirstMintPrice() external view returns(uint) {
         return firstMintPrice;
     }
@@ -107,6 +119,10 @@ contract GachaCard is ERC721EnumerableUpgradeable, ReentrancyGuard {
     }
     function getFirstMintAmount() view external returns(uint) {
         return firstMintAmount;
+    }
+
+    function getAddress() external view returns(address) {
+        return address(this);
     }
 
 }

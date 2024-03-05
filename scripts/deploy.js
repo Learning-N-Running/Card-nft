@@ -5,19 +5,26 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 require("dotenv").config();
+const hre = require("hardhat");
+
+FIRST_MINT_PRICE = ethers.utils.parseEther("0.2");
+MINT_PRICE = ethers.utils.parseEther("0.1");
+FIRST_MINT_AMOUNT = 10;
 
 async function main() {
   const GachaCard = await hre.ethers.getContractFactory("GachaCard");
-  const gachaCard = await GachaCard.deploy();
+  const gachaCard = await GachaCard.deploy(
+    FIRST_MINT_PRICE,
+    MINT_PRICE,
+    FIRST_MINT_AMOUNT
+  );
 
-  await gachaCard.deployed();
-
-  console.log("GachaCard deployed to:", gachaCard.address);
+  console.log("GachaCard deployed to:", await gachaCard.getAddress());
 }
 
 main()
-  .then(() => process.exit(0))
+  .then(() => (process.exitCode = 0))
   .catch((error) => {
     console.error(error);
-    process.exit(1);
+    process.exitCode = 1;
   });

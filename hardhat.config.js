@@ -3,7 +3,8 @@ require("@nomiclabs/hardhat-etherscan");
 require("dotenv").config();
 /** @type import('hardhat/config').HardhatUserConfig */
 
-const { SEPOLIA_API_URL, SEPOLIA_PRIVATE_KEY } = process.env;
+const SEPOLIA_API_URL = process.env.SEPOLIA_API_URL;
+const SEPOLIA_PRIVATE_KEY = process.env.SEPOLIA_PRIVATE_KEY;
 
 module.exports = {
   solidity: "0.8.19",

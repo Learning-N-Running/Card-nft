@@ -30,4 +30,19 @@ describe("TinaGachaCard", () => {
       assert.equal(Number(firstMintAmount), Number(FIRST_MINT_AMOUNT));
     });
   });
+
+  describe("Mint", () => {
+    it("Should mint maincard for the first time"),
+      async () => {
+        await gachaCard.firstMainMint(
+          "Tina",
+          "https://github.com/Learning-N-Running",
+          "tina020309@naver.com",
+          "",
+          "",
+          "",
+          "01028369395"
+        );
+      };
+  });
 });
